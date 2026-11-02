@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b18">
+  <title>THE MYSTERY | Escape Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="background-glow"></div>
+
+  <main class="container">
+
+    <!-- BOSHLANISH -->
+    <section id="startScreen" class="screen start-screen">
+      <div class="logo">M<span>Y</span>STERY</div>
+
+      <div class="main-icon">🔐</div>
+
+      <p class="eyebrow">AQLINGNI SINAB KO‘R</p>
+      <h1>SIRLI ESHIK</h1>
+
+      <p class="description">
+        30 ta murakkab savol. 30 ta maxfiy raqam.
+        Bitta xato — eshik abadiy qulflanadi!
+      </p>
+
+      <div class="features">
+        <div>🧠 30 ta savol</div>
+        <div>⏱ 20 soniya</div>
+        <div>🚪 Sirli eshik</div>
+      </div>
+
+      <button class="primary-btn" onclick="startGame()">
+        O‘YINNI BOSHLASH <span>→</span>
+      </button>
+
+      <p class="small-text">FAQAT ENG ZUKKOLAR ESHIKNI OCHADI</p>
+    </section>
+
+
+    <!-- SAVOLLAR -->
+    <section id="quizScreen" class="screen" hidden>
+
+      <header class="topbar">
+        <div class="logo small-logo">M<span>Y</span>STERY</div>
+
+        <div class="top-actions">
+          <button class="icon-btn" onclick="togglePause()" id="pauseBtn">
+            ⏸
+          </button>
+
+          <button class="icon-btn restart-btn" onclick="restartGame()">
+            ↻
+          </button>
+        </div>
+      </header>
+
+      <div class="stats">
+        <div class="stat-card">
+          <span>TO‘PLANGAN BALL</span>
+          <strong id="score">0</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>QOLGAN VAQT</span>
+          <strong id="timer">20s</strong>
+        </div>
+
+        <div class="stat-card">
+          <span>SAVOL</span>
+          <strong><span id="number">1</span>/30</strong>
+        </div>
+      </div>
+
+      <div class="progress-info">
+        <span>O‘YIN JARAYONI</span>
+        <span id="percent">0%</span>
+      </div>
+
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
+
+      <div class="question-card">
+        <div class="question-label">
+          <span>✦</span> MANTIQIY SAVOL
+        </div>
+
+        <h2 id="question">Savol yuklanmoqda...</h2>
+
+        <div id="answers" class="answers"></div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <button id="nextBtn" class="primary-btn" hidden onclick="nextQuestion()">
+          KEYINGI SAVOL →
+        </button>
+      </div>
+
+      <div class="bottom-info">
+        <span>🔒 MAXFIY KOD YIG‘ILMOQDA</span>
+        <span id="collected">0 / 30 RAQAM</span>
+      </div>
+
+    </section>
+
+
+    <!-- PAUZA -->
+    <section id="pauseScreen" class="screen message-screen" hidden>
+      <div class="main-icon">⏸</div>
+      <p class="eyebrow">VAQTINCHA TO‘XTATILDI</p>
+      <h1>PAUZA</h1>
+      <p class="description">
+        Xavotir olma. Vaqt to‘xtatildi.
+        Tayyor bo‘lganingda davom et.
+      </p>
+
+      <button class="primary-btn" onclick="togglePause()">
+        ▶ DAVOM ETISH
+      </button>
+
+      <button class="secondary-btn" onclick="restartGame()">
+        ↻ BOSHIDAN BOSHLASH
+      </button>
+    </section>
+
+
+    <!-- ESHIK -->
+    <section id="doorScreen" class="screen door-screen" hidden>
+
+      <div class="door-glow"></div>
+
+      <div class="door-art">
+        <div class="door-frame">
+          <div class="door-inner">
+            <div class="door-lock">🔐</div>
+            <div class="door-knob"></div>
+            <div class="door-number">30</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="eyebrow">OXIRGI BOSQICH</p>
+      <h1>SIRLI ESHIK</h1>
+
+      <div id="lockedMessage">
+        <p class="description">
+          Sen barcha 30 ta savolga to‘g‘ri javob berding!
+          Endi to‘plagan maxfiy raqamlaringni kirit.
+        </p>
+
+        <div class="code-info">
+          <span>MAXFIY KOD</span>
+          <span>30 XONALI</span>
+        </div>
+
+        <input
+          id="doorCode"
+          type="password"
+          inputmode="numeric"
+          maxlength="30"
+          placeholder="KODNI KIRITING"
+          autocomplete="off"
+        >
+
+        <p id="doorMessage"></p>
+
+        <button class="primary-btn" onclick="openDoor()">
+          🔓 ESHIKNI OCHISH
+        </button>
+      </div>
+
+      <div id="successScreen" hidden>
+        <div class="win-icon">🏆</div>
+        <h2>ESHIK OCHILDI!</h2>
+        <p class="description">
+          Ajoyib! Sen barcha jumboqlarni yechding.
+          Sen haqiqiy mantiq ustasisan!
+        </p>
+
+        <div class="final-stats">
+          <span>YAKUNIY NATIJA</span>
+          <strong id="finalScore">300 / 300</strong>
+        </div>
+
+        <button class="primary-btn" onclick="restartGame()">
+          ↻ QAYTA O‘YNASH
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- MAG‘LUBIYAT -->
+    <section id="failedScreen" class="screen message-screen" hidden>
+      <div class="main-icon">🔒</div>
+      <p class="eyebrow">O‘YIN YAKUNLANDI</p>
+      <h1>ESHIK QULFLANDI</h1>
+
+      <p class="description">
+        Afsuski, barcha savollarga to‘g‘ri javob bera olmading.
+        Eshikni ochish uchun yana urinib ko‘r!
+      </p>
+
+      <div class="final-stats">
+        <span>TO‘PLAGAN BALLING</span>
+        <strong id="failedScore">0 / 300</strong>
+      </div>
+
+      <button class="primary-btn" onclick="restartGame()">
+        ↻ QAYTA URINISH
+      </button>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
